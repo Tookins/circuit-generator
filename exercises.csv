@@ -1,6 +1,9 @@
-name, movement pattern, difficulty
-pushup, press, 3
-squat, squat, 2
-pullup, pull, 7
-bridge, hip extension, 1
-leg lift, hip flexion, 3
+name,movement pattern,rpe,muscle group,equipment
+pushup,press,arms,None
+squat,squat,legs,None
+pullup,pull,back,bar
+bridge,hip extension,hips,None
+leg lift, hip flexion,abdominals,None
+flutter kick,hip flexion,abdominals,None
+technical stand up,get up,full body,None
+lunge,squat,legs,None

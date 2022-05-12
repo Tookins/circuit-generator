@@ -1,43 +1,70 @@
 #TODO
 #add in rpe calculation and apply to exercise selection
 #add ability to add exercises to the table
+#save a log of workout history
+#change data format from csv to json
+#add support for multiple user profiles
+#add support for workout specificity
+
 import sys
-import os
-import pandas as pd
-import numpy as np
-from numpy.random import default_rng
+import csv
+import random
 
-exercises = pd.read_csv("exercises.csv")
-rng = default_rng()
 
-def build_circuit(rounds, round_time, rpe):
-    circuit = np.array(exercises['name'].tolist())
-    rng.shuffle(circuit)
-    return circuit[:rounds]
+def build_circuit(rounds):
+    """generates a list of exercises from some input"""
+    exercises = []
+
+    with open('exercises.csv', newline='') as table:
+        table_reader = csv.reader(table, delimiter=',')
+
+        for entry in table_reader:
+            exercises.append(entry[0])
+
+    return random.sample(exercises, rounds)
+
 
 def main():
+    print("Welcome to the circuit generator, a program that generates workouts")
+    print("for circuit training.")
 
-    print("Welcome to the circuit generator, a program that generates workouts for circuit training")
-
-    if (len(argv) == 1 or argv[1]=="custom"):
+    if (len(sys.argv) == 1 or sys.argv[1]=="custom"):
         rounds = int(input("How many rounds per circuit? "))
-        round_time = int(input("How long are the rounds (seconds)? "))
-        duration = int(input("How long is the training session (minutes)? "))
-        rpe = int(input("How hard is the training? "))
-        circuit = build_circuit(rounds, round_time, rpe)
-        print("Circuit:")
-        print(circuit)
-        print("perform each exercise for " + str(round_time) + " seconds, rest " + str(round_time / 3) + " seconds between rounds")
-        print("repeat the circuit " + str(duration / (4/3*round_time/60*rounds)) + " times")
 
-    elif (arg=="add"):
-        repeat = "y"
-        while(repeat.lower()=="y"):
-            print("Add an exercise")
-            name = input("Name: ")
-            pattern = input("Movement Pattern: ")
-            difficulty = int(input("Difficulty (1-10): "))
-            
-            repeat = input("Add another exercise?(y/n)") 
+        round_time = int(input("How long are the rounds (seconds)? "))
+
+        duration = int(input("How long is the training session (minutes)? "))
+
+        circuit = build_circuit(rounds)
+
+        print("Circuit:")
+
+        print(circuit)
+
+        print("perform each exercise for " + str(round_time) + " seconds, rest " 
+        + str(round_time // 3) + " seconds between rounds")
+
+        print("repeat the circuit " + str(int(duration / (4/3*round_time/60*rounds))) + " times")
+
+    elif (sys.argv[1]=="add"):
+        
+        while("y" == input("add an exercise to the table? (y/n)")):
+
+            with open('exercises.csv', 'a+', newline='') as table:
+                table_writer =  csv.writer(table, delimiter = ',')
+
+                print("Add an exercise")
+
+                name = input("Name: ")
+
+                pattern = input("Movement Pattern: ")
+
+                muscles = input("Muscle Group: ")
+
+                equipment = input("Equipment Needed: ")
+
+                table_writer.writerow((name, pattern, muscles, equipment))
+
+
 if (__name__=="__main__"):
     main()
