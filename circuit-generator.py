@@ -7,9 +7,11 @@
 #add support for workout specificity
 
 import sys
-import csv
+import sqlite3
 import random
 
+conn = sqlite3.connect('exercises.db')
+cur = conn.cursor()
 
 def build_circuit(rounds):
     """generates a list of exercises from some input"""
@@ -23,6 +25,8 @@ def build_circuit(rounds):
 
     return random.sample(exercises, rounds)
 
+def add_exercise(name, muscle, movement, equipment):
+    #add the exercise to exercises.db
 
 def main():
     print("Welcome to the circuit generator, a program that generates workouts")
